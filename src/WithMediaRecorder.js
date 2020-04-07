@@ -93,6 +93,9 @@ function WithMediaRecorder (WrappedComponent, props) {
         })
         // stop recording - timer
         this.wait(this.props.recordTimerMs).then(this.stopRecord)
+        
+        // Check Permissions
+        this.askPermissions()
 
         this.recorder = recorder
         recorder.start()
