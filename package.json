@@ -7,7 +7,8 @@
     "start": "parcel example/index.html",
     "build": "parcel build src/WithMediaRecorder.js",
     "prepublish": "npm run build",
-    "release": "np"
+    "release": "np",
+    "postinstall": "cd node_modules/react-with-mediarecorder && npm install && npm run build"
   },
   "keywords": [
     "react",
