@@ -60,7 +60,7 @@ function WithMediaRecorder (WrappedComponent, props) {
           this.recordDelay()
           if (typeof this.userAcceptsCb === 'function') this.userAcceptsCb(this.mediaStream)
           if (this.previewRef.current) this.previewRef.current.srcObject = this.mediaStream
-        } catch (e) {
+        } catch (e) { 
           if (e === 'NotAllowedError') throw new Error('Media access not allowed, cant record.')
           console.error('Video error: ', e)
         }
@@ -78,12 +78,14 @@ function WithMediaRecorder (WrappedComponent, props) {
         })
       } else console.error('No media to pause. Is media active?')
     }
-    record () {
+    async record () {
+      // Check Permissions
+      await this.askPermissions()
       if (this.isMediaActive()) {
         if (this.state.isRecording) return console.error('Media currently recording...')
         const recorder = new window.MediaRecorder(this.mediaStream)
         let mediaChunks = []
-
+        
         recorder.ondataavailable = evt => mediaChunks.push(evt.data)
         recorder.onstart = this.onRecordStart
 
@@ -94,9 +96,6 @@ function WithMediaRecorder (WrappedComponent, props) {
         // stop recording - timer
         this.wait(this.props.recordTimerMs).then(this.stopRecord)
         
-        // Check Permissions
-        this.askPermissions()
-
         this.recorder = recorder
         recorder.start()
 

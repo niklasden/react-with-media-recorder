@@ -1,44 +1,33 @@
 {
-  "name": "react-with-mediarecorder",
-  "version": "1.1.2",
-  "description": "React HOC for MediaRecorder interface",
+  "name": "react-with-media-recorder",
+  "version": "1.0.0",
+  "description": "React with media recorder -",
   "main": "dist/WithMediaRecorder.js",
+  "directories": {
+    "example": "example"
+  },
+  "dependencies": {
+    "parcel": "^1.12.4",
+    "react": "^16.13.1",
+    "react-scripts": "3.4.1"
+  },
   "scripts": {
     "start": "parcel example/index.html",
     "build": "parcel build src/WithMediaRecorder.js",
-    "postinstall": "cd node_modules/react-with-mediarecorder/ && npm install && npm run build"
-  },
-  "keywords": [
-    "react",
-    "mediarecorder",
-    "record",
-    "media"
-  ],
-  "author": "Juan Mendivil (http://mendivil.mx)",
-  "license": "ISC",
-  "browserslist": [
-    "last 1 Chrome version",
-    "Firefox ESR",
-    "last 1 safari version",
-    "last 1 opera version",
-    "last 1 edge version"
-  ],
-  "dependencies": {
-    "@babel/core": "^7.2.2",
-    "@babel/preset-env": "^7.2.3",
-    "@babel/preset-react": "^7.0.0",
-    "react": "^16.7.0",
-    "react-dom": "^16.7.0"
-  },
-  "devDependencies": {
-    "np": "^5.0.0"
+    "prepublish": "yarn run build",
+    "release": "np"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jmmendivil/react-with-media-recorder.git"
+    "url": "git+https://github.com/niklasden/react-with-media-recorder.git"
   },
+  "author": "Niklas Denneler",
+  "license": "MIT",
   "bugs": {
-    "url": "https://github.com/jmmendivil/react-with-media-recorder/issues"
+    "url": "https://github.com/niklasden/react-with-media-recorder/issues"
   },
-  "homepage": "https://github.com/jmmendivil/react-with-media-recorder#readme"
+  "homepage": "https://github.com/niklasden/react-with-media-recorder#readme",
+  "devDependencies": {
+    "@babel/core": "^7.9.0"
+  }
 }
