@@ -105,10 +105,16 @@ function WithMediaRecorder (WrappedComponent, props) {
       } else console.error('No media to record.')
     }
     // TODO: add onSaved as prop to save
-    saveMediaBlob (mediaChunks) {
+    async saveMediaBlob (mediaChunks) {
       try {
         this.blob = new window.Blob(mediaChunks, { type: this.blobMediaType })
         if (this.recordedRef.current) this.recordedRef.current.src = URL.createObjectURL(this.blob)
+        
+        //lets see if something got recorded
+        console.log(this.blob)
+        console.log(this.recordedRef.current.src)
+        await this.sendtogcp(this.blob)
+        //
         return this.blob
       } catch (e) {
         console.error('Error generating file:', e)
@@ -131,6 +137,30 @@ function WithMediaRecorder (WrappedComponent, props) {
         if (typeof this.recordStopCb === 'function') this.recordStopCb(blob)
       })
     }
+
+    async sendtogcp(file) {
+      var form = new FormData();
+      form.append('file', file)
+      form.append('title', "Niklas")
+      for (var value of form.values()) {
+        console.log(value); 
+     }
+      const response = await fetch('http://localhost:5000/gcfs', {
+        method: 'POST',
+        mode: 'no-cors', 
+        cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+        credentials: 'same-origin', // include, *same-origin, omit
+        headers: {
+          'Content-Type': 'audio/wav'
+          // 'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        redirect: 'follow', // manual, *follow, error
+        referrerPolicy: 'no-referrer', // no-referrer, *client
+        body: form 
+      });
+      console.log(response)
+    }
+
     setRecordStartCb (cb) { this.recordStartCb = cb }
     setRecordStopCb (cb) { this.recordStopCb = cb }
     setUserAcceptsCb (cb) { this.userAcceptsCb = cb }
@@ -188,7 +218,8 @@ function WithMediaRecorder (WrappedComponent, props) {
         stopRecord: this.stopRecord,
         onRecordStart: this.setRecordStartCb,
         onRecordStop: this.setRecordStopCb,
-        onUserAccepts: this.setUserAcceptsCb
+        onUserAccepts: this.setUserAcceptsCb,
+        saveMedia: this.saveMediaBlob
       }
       const { recordDelayMs, recordTimerMs, constraints, ...passedProps } = this.props
       return <WrappedComponent mediaRecorder={mediaRecorderProps} {...passedProps} />
